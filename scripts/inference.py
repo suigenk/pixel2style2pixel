@@ -63,9 +63,14 @@ def run():
 	                        num_workers=int(opts.test_workers),
 	                        drop_last=True)
 
+	if opts.n_images is None:
+		opts.n_images = len(dataset)
+	
 	global_i = 0
 	global_time = []
 	for input_batch in tqdm(dataloader):
+		if global_i > opts.n_images:
+			break
 		with torch.no_grad():
 			input_cuda = input_batch.cuda().float()
 			tic = time.time()
